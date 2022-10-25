@@ -16,26 +16,10 @@ import {
 import { UserService } from '../service/user.service';
 import { User } from '../models/user.interface';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { diskStorage } from 'multer';
-import { v4 as uuidv4 } from 'uuid';
-import path = require('path');
 import { UserIsUserGuard } from 'src/auth/guards/UserIsUser.guard';
-
-export const storage = {
-  storage: diskStorage({
-    destination: './uploads/profileimages',
-    filename: (req, file, cb) => {
-      const filename: string =
-        path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-      const extension: string = path.parse(file.originalname).ext;
-
-      cb(null, `${filename}${extension}`);
-    },
-  }),
-};
 
 @Controller('users')
 export class UserController {
@@ -99,14 +83,5 @@ export class UserController {
   @Put(':id')
   updateOne(@Param('id') id: string, @Body() user: User): Observable<any> {
     return this.userService.updateOne(Number(id), user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put(':id/role')
-  updateRoleOfUser(
-    @Param('id') id: string,
-    @Body() user: User,
-  ): Observable<User> {
-    return this.userService.updateRoleOfUser(Number(id), user);
   }
 }
