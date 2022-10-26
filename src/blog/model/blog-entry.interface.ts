@@ -8,6 +8,5 @@ export interface BlogEntry {
   createdAt?: Date;
   updatedAt?: Date;
   author?: User;
-  publishedDate?: Date;
-  isPublished?: boolean;
+  tags?: string[];
 }

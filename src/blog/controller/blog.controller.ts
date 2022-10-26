@@ -67,6 +67,11 @@ export class BlogController {
     );
   }
 
+  @Get(':tag')
+  findByTag(@Param('tag') tag: string): Observable<BlogEntry[]> {
+    return this.blogService.findByTag(tag);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: number): Observable<BlogEntry> {
     return this.blogService.findOne(id);

@@ -127,7 +127,6 @@ export class UserService {
     );
   }
 
-
   login(user: User): Observable<string> {
     return this.validateUser(user.email, user.password).pipe(
       switchMap((user: User) => {
@@ -143,14 +142,7 @@ export class UserService {
   }
 
   validateUser(email: string, password: string): Observable<User> {
-    return from(
-      this.userRepository.findOne(
-        { email },
-        {
-          select: ['id', 'password', 'name', 'username', 'email'],
-        },
-      ),
-    ).pipe(
+    return this.findByMail(email).pipe(
       switchMap((user: User) =>
         this.authService.comparePasswords(password, user.password).pipe(
           map((match: boolean) => {

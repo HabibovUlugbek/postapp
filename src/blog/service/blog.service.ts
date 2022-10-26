@@ -70,6 +70,17 @@ export class BlogService {
     ).pipe(map((blogEntries: BlogEntry[]) => blogEntries));
   }
 
+  findByTag(tag: string): Observable<BlogEntry[]> {
+    return from(
+      this.blogRepository.find({
+        where: {
+          tags: tag,
+        },
+        relations: ['author'],
+      }),
+    ).pipe(map((blogEntries: BlogEntry[]) => blogEntries));
+  }
+
   updateOne(id: number, blogEntry: BlogEntry): Observable<BlogEntry> {
     return from(this.blogRepository.update(id, blogEntry)).pipe(
       switchMap(() => this.findOne(id)),

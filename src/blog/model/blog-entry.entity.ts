@@ -32,12 +32,9 @@ export class BlogEntryEntity {
     this.updatedAt = new Date();
   }
 
-  @Column({ nullable: true })
-  publishedDate: Date;
-
-  @Column({ nullable: true })
-  isPublished: boolean;
-
   @ManyToOne((type) => UserEntity, (user) => user.blogEntries)
   author: UserEntity;
+
+  @Column({ type: 'simple-array', default: [] })
+  tags: string[];
 }
